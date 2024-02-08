@@ -7,23 +7,23 @@ import openai
 import re
 import requests
 import argparse
+import logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # ----------------------------------------------------Global Variables----------------------------------------------------
 
 # Get API keys(OpenAI and Hugging Face)
 openai.api_key = os.environ["OPENAI_API_KEY"]
+
 APIURL = {
     "starcoder": "placeholder",
-    "huggingface": "placeholder"
+    "codellama": "https://ngc37enjcuskhoxi.us-east-1.aws.endpoints.huggingface.cloud"
 }
 headers = {
-    "Authorization: Bearer " + os.environ["HUGGINGFACE_API_KEY"],
-    "Content-Type: application/json"
+    "Accept" : "application/json",
+    "Authorization": f'Bearer {os.environ["HuggingFace_API_KEY"]}',
+    "Content-Type": "application/json"
 }
-
-# Independent Variables
-temperatures = [0,1,2]
-models = ["gpt-3.5-turbo", "gpt-4", "starcoder", "codellama"]
 
 # ----------------------------------------------------Functions----------------------------------------------------------
 
@@ -41,19 +41,23 @@ def parse_arguments() -> dict:
     # Create the parser
     parser = argparse.ArgumentParser(description='Queries the LLMs for a given prompt and returns code snippets.')
 
-    # Add arguments
     parser.add_argument(
-        'positional_argument', type=int, help='A positional integer argument'
+        '--prompt', type=str, help='Prompt to send to the model', required=True
     )
     parser.add_argument(
-        '--optional_argument', type=str, help='An optional string argument', default='default_value'
+        '--model', type=str, help='Model (GPT vs StarCoder)', required=True
     )
     parser.add_argument(
-        '--flag', action='store_true', help='A boolean flag'
+        '--temperature', type=int, help='Temperature for the response generation', required=True
+    )
+    parser.add_argument(
+        '--task', type=str, help='Task to perform (python2java, java2python, python)', required=True  
     )
 
     # Parse the arguments
     args = parser.parse_args()
+
+    return args
 
 def query_gpt(prompt: str, model: str, temperature: float) -> str:
     """
@@ -95,27 +99,33 @@ def query_gpt(prompt: str, model: str, temperature: float) -> str:
     return response["choices"][0]["message"]["content"]
 
 
-def query_huggingface(payload: dict, model: str, temperature: float) -> dict:
+def query_huggingface(prompt: str, model: str, temperature: float) -> str:
     """
-    Sends a query to the specified Hugging Face model with a given payload and temperature.
+    Sends a query to the specified Hugging Face model and retrieves the response.
 
-    This function submits a payload to a Hugging Face API model endpoint. It modifies
-    the payload to include the specified temperature, which controls the randomness
-    of the response. If the response status is not 200, it raises an exception.
+    This function submits a prompt to the Hugging Face API using the specified model.
 
     Args:
-        payload (dict): The payload containing the data to be sent to the model.
-        model (str): The identifier of the Hugging Face model to be used.
+        prompt (str): The input text prompt to send to the model.
+        model (str): The identifier of the Hugging Face model to be used for the response.
         temperature (float): A float value that controls the randomness of the
-                             generated response from the model.
+                             response. Lower values make the model more deterministic.
 
     Returns:
-        dict: The JSON response from the Hugging Face model.
+        str: The content of the response from the Hugging Face model.
 
-    Raises:
-        Exception: If the request to the Hugging Face model fails.
-        ValueError: If the API response cannot be parsed as JSON.
     """
+
+    # Create the payload for the request
+    payload = {
+        "inputs": prompt,
+        "parameters": {
+            "temperature": temperature,
+            "max_new_tokens": 2048,
+            "top_p": 1,
+            "frequency_penalty": 0,
+        }
+    }
 
     # Send the request to the Hugging Face model
     response = requests.post(APIURL[model], headers=headers, json=payload) 
@@ -126,15 +136,123 @@ def query_huggingface(payload: dict, model: str, temperature: float) -> dict:
 
     # Try parsing the response as JSON
     try:
-        return response.json()
+        return response["choices"][0]["message"]["content"]
     except ValueError:
         raise ValueError("API response could not be parsed as JSON")
+
+def get_file_suffix(task: str) -> str:
+    """
+    Returns the file suffix for the given task.
+
+    This function returns the file suffix for the given task. The file suffix
+    is used to determine the file extension of the generated code snippets.
+
+    Args:
+        task (str): The task for which to generate the file suffix.
+
+    Returns:
+        str: The file suffix for the given task.
+    """
+
+    # Return the file suffix based on the task
+    if task == "python2java":
+        return "java"
+    elif task == "java2python":
+        return "py"
+    elif task == "python":
+        return "py"
+    else:
+        raise ValueError(f"Unknown file suffix in get_file_suffix: {task}")
+    
 
 
 def main():
 
     # -- Get the command line arguments -- #
     args = parse_arguments()
+    task = args.task
+    model = args.model
+    prompt = args.prompt
+    temperature = args.temperature
+
+    # -- Get the file suffix -- #
+    file_suffix = get_file_suffix(task)
+
+    # -- Query the model -- #
+    with open(f'../data/{prompt}/{model}/{task}/{temperature}/generated.{file_suffix}', 'w') as file:
+        logging.info(f"Writing to file: ../data/{prompt}/{model}/{task}/{temperature}/generated.{file_suffix}")
+
+        # unique_samples = 0
+        total_samples = 0
+
+        # hashes = set()
+
+        while total_samples < 20:
+            total_samples += 1
+
+            # Get code snippet
+            if task == "python2java":
+                with open(f'../data/{prompt}/original.py', 'r') as original_file:
+
+                    # Get the original code and create prompt
+                    original_code = original_file.read()
+                    model_input = f"Convert the following Python code to Java:\n{original_code}"
+
+                    # Query the model
+                    if model == "gpt-3.5-turbo" or model == "gpt-4":
+                        response = query_gpt(model_input, model, temperature)
+                    elif model == "starcoder" or model == "codellama":
+                        response = query_huggingface(model_input, model, temperature)
+                    else:
+                        raise ValueError(f"Unknown model in main: {model}")
+
+            elif task == "java2python":
+                with open(f'../data/{prompt}/original.java', 'r') as original_file:
+
+                    # Get the original code and create prompt
+                    original_code = original_file.read()
+                    model_input = f"Convert the following Java code to Python:\n{original_code}"
+
+                    # Query the model
+                    if model == "gpt-3.5-turbo" or model == "gpt-4":
+                        response = query_gpt(model_input, model, temperature)
+                    elif model == "starcoder" or model == "codellama":
+                        response = query_huggingface(model_input, model, temperature)
+                        # Extract the code snippet from the response
+                        response = response["choices"][0]["message"]["content"]
+                    else:
+                        raise ValueError(f"Unknown model in main: {model}")
+
+            elif task == "python":
+                with open(f'../data/{prompt}/original.py', 'r') as original_file:
+
+                    # Get the original code and create prompt
+                    original_code = original_file.read()
+                    model_input = f"Create a clone of the following code that is semantically equivalent and syntactially different: \n{original_code}"
+
+                    # Query the model
+                    if model == "gpt-3.5-turbo" or model == "gpt-4":
+                        response = query_gpt(model_input, model, temperature)
+                    elif model == "starcoder" or model == "codellama":
+                        response = query_huggingface(model_input, model, temperature)
+                    else:
+                        raise ValueError(f"Unknown model in main: {model}")
+            else:
+                raise ValueError(f"Unknown task in main: {task}")
+
+    # -- Check if the response is unique and write it to the file if it is unique -- #
+#            hash_value = hashlib.sha256(response.encode()).hexdigest()
+
+#            if hash_value not in hashes:
+            #unique_samples += 1
+#                hashes.add(hash_value)
+            file.write(response)
+            file.write("\n\n\n")
+
+    # -- Log the results -- #          
+            logging.info(f"Total samples: {total_samples}")
+#")
+
 
 if __name__ == "__main__":
     main()

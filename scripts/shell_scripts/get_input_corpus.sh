@@ -1,0 +1,1 @@
+python3  ../get_input_corpus.py --input_path /home/aeagal/slacc_inspired_protoype/data/reverse_int --number_of_input 10
