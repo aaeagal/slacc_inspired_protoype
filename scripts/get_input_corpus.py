@@ -7,6 +7,8 @@ import javalang
 import ast
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+# TODO: DEAL WITH DUPLICATES IN THE INPUT CORPUS BUG by using a set to store the argument types
+
 def get_args() -> argparse.Namespace:
     """
     Get the arguments from the command line
@@ -39,7 +41,7 @@ def get_file_list(path: str) -> list[str]:
     file_list = []
     for root, dirs, files in os.walk(path):
         for file in files:
-            if file.endswith('.java') or file.endswith('.py'):
+            if file.endswith('.java') or file.endswith('.py') or file.endswith('.json'):
                 file_list.append(os.path.join(root, file))
     return file_list
 
@@ -72,6 +74,8 @@ def generate_input_values(arg_types: list, number_of_input: int) -> list:
             else:
                 # Throw an error if the argument type is not supported with the data type needed
                 raise TypeError(f"Argument type {arg_type} is not supported")
+            
+            #TODO:FIX DUPLICATES IN THE INPUT CORPUS BUG
         input_values.append(args)
     return input_values
 
