@@ -522,6 +522,85 @@ class Solution {
         number = sign == 1 ? -number : number;
         return number;
     }
+
+    // main method
+    public static void main(String[] args) {
+        // get the input from the user and call the function
+        String methodName = args[0];
+
+        int x = Integer.parseInt(args[1]);
+
+        Solution solution = new Solution();
+
+        switch (methodName) {
+            case "reverse1":
+                System.out.println(solution.reverse1(x));
+                break;
+            case "reverse2":
+                System.out.println(solution.reverse2(x));
+                break;
+            case "reverse3":
+                System.out.println(solution.reverse3(x));
+                break;
+            case "reverse4":
+                System.out.println(solution.reverse4(x));
+                break;
+            case "reverse5":
+                System.out.println(solution.reverse5(x));
+                break;
+            case "reverse6":
+                System.out.println(solution.reverse6(x));
+                break;
+            case "reverse7":
+                System.out.println(solution.reverse7(x));
+                break;
+            case "reverse8":
+                System.out.println(solution.reverse8(x));
+                break;
+            case "reverse9":
+                System.out.println(solution.reverse9(x));
+                break;
+            case "reverse10":
+                System.out.println(solution.reverse10(x));
+                break;
+            case "reverse11":
+                System.out.println(solution.reverse11(x));
+                break;
+            case "reverse12":
+                System.out.println(solution.reverse12(x));
+                break;
+            case "reverse13":
+                System.out.println(solution.reverse13(x));
+                break;
+            case "reverse14":
+                System.out.println(solution.reverse14(x));
+                break;
+            case "reverse15":
+                System.out.println(solution.reverse15(x));
+                break;
+            case "reverse16":
+                System.out.println(solution.reverse16(x));
+                break;
+            case "reverse17":
+                System.out.println(solution.reverse17(x));
+                break;
+            case "reverse18":
+                System.out.println(solution.reverse18(x));
+                break;
+            case "reverse19":
+                System.out.println(solution.reverse19(x));
+                break;
+            case "reverse20":
+                System.out.println(solution.reverse20(x));
+                break;
+        }
+
+        
+
+
+
+
+    }
 }
 
 

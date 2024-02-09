@@ -1,413 +1,456 @@
 import sys
-class Solution:
-    def reverse1(self, x: int) -> int:
-        num = abs(x)
-        rev = 0
+
+def reverse1(self, x: int) -> int:
+    num = abs(x)
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
+
+        # Overflow check
+        if rev > (2147483647 - ld) // 10:
+            return 0
+
+        rev = rev * 10 + ld
+        num = num // 10
         
-        while num != 0:
-            ld = num % 10
+    if x < 0:
+        rev = -rev
+        
+    return rev
 
-            # Overflow check
-            if rev > (2147483647 - ld) // 10:
-                return 0
 
-            rev = rev * 10 + ld
-            num = num // 10
+def reverse2(x):
+    num = abs(x)
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
+        
+        # Overflow check
+        if rev > (2147483647 - ld) / 10:
+            return 0
             
-        if x < 0:
-            rev = -rev
-            
-        return rev
-
-
-    def reverse2(x):
-        num = abs(x)
-        rev = 0
+        rev = rev * 10 + ld
+        num = num // 10
+    
+    if x < 1:
+        rev = rev * (-1)
         
-        while num != 0:
-            ld = num % 10
-            
-            # Overflow check
-            if rev > (2147483647 - ld) / 10:
-                return 0
-                
-            rev = rev * 10 + ld
-            num = num // 10
+    return rev
+
+
+def reverse3(x):
+    num = abs(x)
+    
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
         
-        if x < 1:
-            rev = rev * (-1)
-            
-        return rev
-
-
-    def reverse3(x):
-        num = abs(x)
+        # Overflow check
+        if rev > (sys.maxsize - ld) // 10:
+            return 0
         
-        rev = 0
+        rev = rev * 10 + ld
+        num = num // 10
+    
+    if x < 1:
+        rev = rev * (-1)
+    
+    return rev
+
+def reverse4(self, x):
+    num = abs(x)
+
+    rev = 0
+
+    while num != 0:
+        ld = num % 10
+
+        # Overflow check
+        if rev > (2147483647 - ld) / 10:
+            return 0
+
+        rev = rev * 10 + ld
+        num = num // 10
+
+    if x < 1:
+        rev = rev * (-1)
+    return rev
+
+
+def reverse5(x):
+    num = abs(x)
+    rev = 0
+
+    while num != 0:
+        ld = num % 10
+
+        # Overflow check
+        if rev > (sys.maxsize - ld) / 10:
+            return 0
+
+        rev = rev * 10 + ld
+        num = num // 10
+
+    if x < 1:
+        rev = rev * (-1)
+
+    return rev
+
+
+def reverse6(x):
+    num = abs(x)
+    
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
         
-        while num != 0:
-            ld = num % 10
-            
-            # Overflow check
-            if rev > (sys.maxsize - ld) // 10:
-                return 0
-            
-            rev = rev * 10 + ld
-            num = num // 10
+        # Overflow check
+        if rev > (pow(2,31) - 1 - ld) / 10:
+            return 0
         
-        if x < 1:
-            rev = rev * (-1)
+        rev = rev * 10 + ld
+        num = num // 10
+    
+    if x < 1:
+        rev = rev * (-1)
+    return rev
+
+
+def reverse7(x):
+    num = abs(x)
+    
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
         
-        return rev
-
-    def reverse4(self, x):
-        num = abs(x)
-
-        rev = 0
-
-        while num != 0:
-            ld = num % 10
-
-            # Overflow check
-            if rev > (2147483647 - ld) / 10:
-                return 0
-
-            rev = rev * 10 + ld
-            num = num // 10
-
-        if x < 1:
-            rev = rev * (-1)
-        return rev
-
-
-    def reverse5(x):
-        num = abs(x)
-        rev = 0
-
-        while num != 0:
-            ld = num % 10
-
-            # Overflow check
-            if rev > (sys.maxsize - ld) / 10:
-                return 0
-
-            rev = rev * 10 + ld
-            num = num // 10
-
-        if x < 1:
-            rev = rev * (-1)
-
-        return rev
-
-
-    def reverse6(x):
-        num = abs(x)
+        # Overflow check
+        if rev > (sys.maxsize - ld) / 10:
+            return 0
         
-        rev = 0
-        
-        while num != 0:
-            ld = num % 10
-            
-            # Overflow check
-            if rev > (pow(2,31) - 1 - ld) / 10:
-                return 0
-            
-            rev = rev * 10 + ld
-            num = num // 10
-        
-        if x < 1:
-            rev = rev * (-1)
-        return rev
+        rev = rev * 10 + ld
+        num = num // 10
+    
+    if x < 1:
+        rev = rev * -1
+    
+    return rev
 
 
-    def reverse7(x):
-        num = abs(x)
+def reverse8(x):
+    num = abs(x)
+    
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
         
-        rev = 0
+        # Overflow check
+        if rev > (sys.maxsize - ld) / 10:
+            return 0
         
-        while num != 0:
-            ld = num % 10
-            
-            # Overflow check
-            if rev > (sys.maxsize - ld) / 10:
-                return 0
-            
-            rev = rev * 10 + ld
-            num = num // 10
-        
-        if x < 1:
-            rev = rev * -1
-        
-        return rev
+        rev = rev * 10 + ld
+        num = num // 10
+    
+    if x < 1:
+        rev = rev * (-1)
+    
+    return rev
 
 
-    def reverse8(x):
-        num = abs(x)
+def reverse9(x):
+    num = abs(x)
+    
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
         
-        rev = 0
+        # Overflow check
+        if rev > (sys.maxsize - ld) // 10:
+            return 0
         
-        while num != 0:
-            ld = num % 10
-            
-            # Overflow check
-            if rev > (sys.maxsize - ld) / 10:
-                return 0
-            
-            rev = rev * 10 + ld
-            num = num // 10
-        
-        if x < 1:
-            rev = rev * (-1)
-        
-        return rev
+        rev = rev * 10 + ld
+        num = num // 10
+    
+    if x < 1:
+        rev = rev * -1
+    
+    return rev
 
 
-    def reverse9(x):
-        num = abs(x)
-        
-        rev = 0
-        
-        while num != 0:
-            ld = num % 10
-            
-            # Overflow check
-            if rev > (sys.maxsize - ld) // 10:
-                return 0
-            
-            rev = rev * 10 + ld
-            num = num // 10
-        
-        if x < 1:
-            rev = rev * -1
-        
-        return rev
+def reverse10(self, x: int) -> int:
+    num = abs(x)
+    rev = 0
 
+    while num != 0:
+        ld = num % 10
 
-    def reverse10(self, x: int) -> int:
-        num = abs(x)
-        rev = 0
+        # Overflow check
+        if rev > (sys.maxsize - ld) / 10:
+            return 0
 
-        while num != 0:
-            ld = num % 10
-
-            # Overflow check
-            if rev > (sys.maxsize - ld) / 10:
-                return 0
-
-            rev = rev * 10 + ld
-            num = num // 10
-        
-        if x < 0:
-            rev = -rev
-        
-        return rev
+        rev = rev * 10 + ld
+        num = num // 10
+    
+    if x < 0:
+        rev = -rev
+    
+    return rev
 
 
 
-    def reverse11(self, x: int) -> int:
-        num = abs(x)
+def reverse11(self, x: int) -> int:
+    num = abs(x)
+    
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
         
-        rev = 0
+        # Overflow check
+        if rev > (sys.maxsize - ld) // 10:
+            return 0
         
-        while num != 0:
-            ld = num % 10
-            
-            # Overflow check
-            if rev > (sys.maxsize - ld) // 10:
-                return 0
-            
-            rev = rev * 10 + ld
-            num = num // 10
-        
-        if x < 1:
-            rev = rev * (-1)
-        
-        return rev
+        rev = rev * 10 + ld
+        num = num // 10
+    
+    if x < 1:
+        rev = rev * (-1)
+    
+    return rev
 
 
 
-    def reverse12(self, x: int) -> int:
-        num = abs(x)
+def reverse12(self, x: int) -> int:
+    num = abs(x)
+    
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
         
-        rev = 0
+        # Overflow check
+        if rev > (sys.maxsize - ld) // 10:
+            return 0
         
-        while num != 0:
-            ld = num % 10
-            
-            # Overflow check
-            if rev > (sys.maxsize - ld) // 10:
-                return 0
-            
-            rev = rev * 10 + ld
-            num = num // 10
-            
-        if x < 1:
-            rev = rev * (-1)
+        rev = rev * 10 + ld
+        num = num // 10
         
-        return rev
+    if x < 1:
+        rev = rev * (-1)
+    
+    return rev
 
 
 
-    def reverse13(self, x):
-        num = abs(x)
+def reverse13(self, x):
+    num = abs(x)
+    
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
         
-        rev = 0
+        # Overflow check
+        if rev > (sys.maxsize - ld) / 10:
+            return 0
         
-        while num != 0:
-            ld = num % 10
-            
-            # Overflow check
-            if rev > (sys.maxsize - ld) / 10:
-                return 0
-            
-            rev = rev * 10 + ld
-            num = num // 10
-        
-        if x < 0:
-            rev = -rev
-        
-        return rev
+        rev = rev * 10 + ld
+        num = num // 10
+    
+    if x < 0:
+        rev = -rev
+    
+    return rev
 
 
-    def reverse14(x):
-        num = abs(x)
+def reverse14(x):
+    num = abs(x)
+    
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
         
-        rev = 0
+        # Overflow check
+        if rev > (sys.maxsize - ld) / 10:
+            return 0
         
-        while num != 0:
-            ld = num % 10
-            
-            # Overflow check
-            if rev > (sys.maxsize - ld) / 10:
-                return 0
-            
-            rev = rev * 10 + ld
-            num = num // 10
-        
-        if x < 1:
-            rev = rev * (-1)
-        return rev
-
-
-
-    def reverse15(self, x: int) -> int:
-        num = abs(x)
-        rev = 0
-        
-        while num != 0:
-            ld = num % 10
-            
-            # Overflow check
-            if rev > (2147483647 - ld) // 10:  # Integer.MAX_VALUE is 2147483647 in Python
-                return 0
-            
-            rev = rev * 10 + ld
-            num = num // 10
-        
-        if x < 1:
-            rev = rev * (-1)
-        
-        return rev
-
-
-    def reverse16(x):
-        num = abs(x)
-        rev = 0
-        
-        while num != 0:
-            ld = num % 10
-            
-            if rev > (sys.maxsize - ld) / 10:
-                return 0
-            
-            rev = rev * 10 + ld
-            num = num // 10
-        
-        if x < 1:
-            rev = rev * (-1)
-        
-        return rev
-
-
-    def reverse17(x):
-        num = abs(x)
-        rev = 0
-        
-        while num != 0:
-            ld = num % 10
-            
-            # Overflow check
-            if rev > (sys.maxsize - ld) / 10:
-                return 0
-            
-            rev = rev * 10 + ld
-            num = num // 10
-            
-        if x < 1:
-            rev = rev * (-1)
-            
-        return rev
-
-
-    def reverse18(x):
-        num = abs(x)
-        rev = 0
-
-        while num != 0:
-            ld = num % 10
-
-            # Overflow check
-            if rev > (2147483647 - ld) // 10:
-                return 0
-
-            rev = rev * 10 + ld
-            num = num // 10
-            
-        if x < 1:
-            rev = rev * -1
-            
-        return rev
-
-
-    def reverse19(x):
-        num = abs(x)
-        
-        rev = 0
-        
-        while num != 0:
-            ld = num % 10
-            
-            # Overflow check
-            if rev > (sys.maxsize - ld) / 10:
-                return 0
-            
-            rev = rev * 10 + ld
-            num = num // 10
-        
-        if x < 1:
-            rev = rev * (-1)
-        
-        return rev
-
-    def reverse20(self, x: int) -> int:
-        num = abs(x)
-        
-        rev = 0
-        
-        while num != 0:
-            ld = num % 10
-            
-            # Overflow check
-            if rev > (2147483647 - ld) // 10:
-                return 0
-            
-            rev = rev * 10 + ld
-            num = num // 10
-        
-        if x < 1:
-            rev = rev * -1
-        
-        return rev
+        rev = rev * 10 + ld
+        num = num // 10
+    
+    if x < 1:
+        rev = rev * (-1)
+    return rev
 
 
 
+def reverse15(self, x: int) -> int:
+    num = abs(x)
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
+        
+        # Overflow check
+        if rev > (2147483647 - ld) // 10:  # Integer.MAX_VALUE is 2147483647 in Python
+            return 0
+        
+        rev = rev * 10 + ld
+        num = num // 10
+    
+    if x < 1:
+        rev = rev * (-1)
+    
+    return rev
+
+
+def reverse16(x):
+    num = abs(x)
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
+        
+        if rev > (sys.maxsize - ld) / 10:
+            return 0
+        
+        rev = rev * 10 + ld
+        num = num // 10
+    
+    if x < 1:
+        rev = rev * (-1)
+    
+    return rev
+
+
+def reverse17(x):
+    num = abs(x)
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
+        
+        # Overflow check
+        if rev > (sys.maxsize - ld) / 10:
+            return 0
+        
+        rev = rev * 10 + ld
+        num = num // 10
+        
+    if x < 1:
+        rev = rev * (-1)
+        
+    return rev
+
+
+def reverse18(x):
+    num = abs(x)
+    rev = 0
+
+    while num != 0:
+        ld = num % 10
+
+        # Overflow check
+        if rev > (2147483647 - ld) // 10:
+            return 0
+
+        rev = rev * 10 + ld
+        num = num // 10
+        
+    if x < 1:
+        rev = rev * -1
+        
+    return rev
+
+
+def reverse19(x):
+    num = abs(x)
+    
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
+        
+        # Overflow check
+        if rev > (sys.maxsize - ld) / 10:
+            return 0
+        
+        rev = rev * 10 + ld
+        num = num // 10
+    
+    if x < 1:
+        rev = rev * (-1)
+    
+    return rev
+
+def reverse20(self, x: int) -> int:
+    num = abs(x)
+    
+    rev = 0
+    
+    while num != 0:
+        ld = num % 10
+        
+        # Overflow check
+        if rev > (2147483647 - ld) // 10:
+            return 0
+        
+        rev = rev * 10 + ld
+        num = num // 10
+    
+    if x < 1:
+        rev = rev * -1
+    
+    return rev
+
+def main():
+    if sys.argv[1] == "reverse1":
+        print(reverse1(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse2":
+        print(reverse2(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse3":
+        print(reverse3(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse4":
+        print(reverse4(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse5":
+        print(reverse5(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse6":
+        print(reverse6(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse7":
+        print(reverse7(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse8":
+        print(reverse8(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse9":
+        print(reverse9(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse10":
+        print(reverse10(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse11":
+        print(reverse11(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse12":
+        print(reverse12(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse13":
+        print(reverse13(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse14":
+        print(reverse14(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse15":
+        print(reverse15(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse16":
+        print(reverse16(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse17":
+        print(reverse17(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse18":
+        print(reverse18(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse19":
+        print(reverse19(int(sys.argv[2])))
+    elif sys.argv[1] == "reverse20":
+        print(reverse20(int(sys.argv[2])))
+    else:
+        print("Invalid function name")
+if __name__ == "__main__":
+    main()
